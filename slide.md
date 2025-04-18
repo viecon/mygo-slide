@@ -127,11 +127,8 @@ section.lead {
 
 ----
 
-![whole_structure](pics/whole_structure.png)
-
-----
-
-[Code](https://github.com/godempty/MyGo_Flipper)
+![專案整體架構圖](pics/whole_structure.png)
+[專案程式碼連結 (Code)](https://github.com/godempty/MyGo_Flipper)
 
 ---
 
@@ -139,22 +136,23 @@ section.lead {
 
 ----
 
-
 ### 什麼是 Prompt Engineering？
 
-是設計與優化提示語（prompts）以引導大型語言模型（LLMs）產生期望輸出的技術。
-透過精心設計的提示詞，提高模型在各種任務上的表現與可靠性。
-~~賽博巫術~~
+* 是設計與優化提示語 (`prompts`) 以引導 **大型語言模型 (Large Language Models, LLMs)** 產生期望輸出的技術。
+* 透過精心設計的提示詞，提高模型在各種任務上的表現與可靠性。
+* ~~賽博巫術~~
 
-[Prompt Engineering - Lee Boonstra](https://www.kaggle.com/whitepaper-prompt-engineering)
+[參考資料：Prompt Engineering - Lee Boonstra](https://www.kaggle.com/whitepaper-prompt-engineering)
 
 ----
 
-### What is LLM?
+### What is LLM? (什麼是大型語言模型?)
 
 ----
 
 > it’s a prediction engine. The model takes sequential text as an input and then predicts what the following token should be, based on the data it was trained on. The LLM is operationalized to do this over and over again, adding the previously predicted token to the end of the sequential text for predicting the following token. The next token prediction is based on the relationship between what’s in the previous tokens and what the LLM has seen during its training.
+
+**簡單來說：** LLM 就像一個超強的文字接龍大師，它根據你給它的文字序列（輸入），預測下一個最可能出現的字詞是什麼，這個預測是基於它在大量資料中學習到的模式。
 
 ----
 
@@ -168,6 +166,7 @@ section.lead {
 ```
 
 ----
+
 <!-- backgroundImage: url("https://top1cdn.top1health.com/cdn/am/20080/63980.jpg") -->
 
 ### One-Shot 
@@ -266,9 +265,10 @@ Generate 5 different ways to ask:
 
 ----
 
-- Jail Breaking
-- Prompt Injection
-- ...
+- Jail Breaking (越獄)： 繞過模型的安全限制，使其產生不當內容。
+- Prompt Injection (提示注入)： 將惡意指令注入提示中，操控模型行為。
+- ...等等
+
 
 [OWASP Top 10 for Large Language Model Applications](https://owasp.org/www-project-top-10-for-large-language-model-applications/)
 [SITCON 2025 R2｜開發者的暗黑小紅帽：大野狼與 LLM｜講者 slasho](https://youtu.be/ElhRVHl7xAc)
@@ -279,10 +279,11 @@ Generate 5 different ways to ask:
 
 ----
 
-- 用新一點的模型
-- 權限不要給太高
-- 限制速率
-- multiagent
+- 使用較新的模型： 新模型通常有更好的安全防護。
+- 權限最小化： 不要給予 LLM 過高的系統或資料存取權限。
+- 限制速率 (Rate Limiting)： 防止惡意使用者大量發送請求。
+- 輸入/輸出過濾： 檢查使用者輸入與模型輸出，過濾潛在惡意內容。
+- 多代理架構 (Multi-agent)： 讓不同功能的 AI 互相監督檢查。
 
 ---
 
@@ -305,8 +306,10 @@ pip install google-genai
 ```py
 import google.generativeai as genai
 
+# 請將 "YOUR_API_KEY" 替換成你自己的 API Key
 genai.configure(api_key="YOUR_API_KEY", transport="rest")
 
+# 選擇要使用的模型 (這裡使用 gemini-1.5-flash)
 model = genai.GenerativeModel("gemini-2.0-flash")
 response = model.generate_content("講個冷笑話")
 
@@ -327,7 +330,7 @@ API rate
 
 ----
 
-#### 要做的事情： 在 `api/transcribe` 這邊接收一個 `wav` 檔，讓 Gemini 選完圖片之後回傳圖片編號
+#### 這次要做的事情： 在後端 API (/api/transcribe) 接收一個 wav 聲音檔，讓 Gemini 理解語音內容後，根據內容選擇一張最適合的梗圖，最後回傳該圖片的編號。
 
 ----
 
@@ -336,6 +339,8 @@ Prompt
 ```py
 import json
 
+# 假設梗圖台詞與編號儲存在 words.json
+# 格式應為 {"0": "台詞一", "1": "台詞二", ...}
 json_data = open("words.json", "r", encoding="utf-8")
 words = json.loads(json_data.read())
 
@@ -436,8 +441,8 @@ def transcribe():                                                 # 定義一個
 
 ### 目標：
 
-1. Host 一個 API server 接收 Flask 那邊傳來的資訊
-2. 根據傳來的資訊控制步進馬達
+1. 在 ESP32 上建立一個簡易的 API Server，接收來自後端 (Flask) 的指令。
+2. 根據接收到的指令 (圖片編號)，控制步進馬達旋轉到對應梗圖的位置。
 
 ----
 
@@ -457,7 +462,7 @@ def transcribe():                                                 # 定義一個
 
 ----
 
-esp32_control.py
+建立一個檔案 esp32_control.py 來處理與 ESP32 的通訊：
 
 ```py
 import requests
@@ -475,7 +480,8 @@ def control_esp(value):
 
 ----
 
-app.py
+修改 app.py (Flask 後端)，在得到 Gemini 回應後呼叫 control_esp：
+
 ```py
 import esp32_control as esp32_control
 
@@ -506,27 +512,28 @@ def transcribe():
 
 ## 什麼是 Docker？
 
-- Docker 是一個**容器化平台**
-- 可以將應用程式與其依賴環境**打包成一個容器**
-- 容器是**輕量級**、**可攜式**且**一致性高**
+- Docker 是一個**容器化平台 (Containerization Platform)**。
+- 可以將你的應用程式與其所有需要的**依賴環境 (例如 Python 版本、特定函式庫) 打包**在一起，形成一個標準化的**容器 (Container)**。
+- 容器是**輕量級、可攜式**的，確保應用程式在任何地方都能**一致地**運行。
 
 ----
 
 ## 為什麼要使用 Docker？
 
-- **環境一致性**：不再有「在我電腦可以跑」
-- **快速部署**：建置、測試、部署一條龍
-- **系統隔離**：每個服務都在獨立的容器中執行
-- **支援多平台**：跨 Windows、macOS、Linux
+- 環境一致性：解決「在我電腦上可以跑，在你電腦上就不行」的問題。開發、測試、生產環境完全一致。
+- 快速部署：容器啟動非常快 (秒級)，方便快速建置、測試與部署。
+- 資源隔離：每個容器有自己獨立的運行環境，互不影響。
+- 易於擴展：可以輕鬆複製容器來擴展服務能力。
+- 支援多平台：可在不同作業系統上運行。
 
 ----
 
 ## Docker 核心概念
 
-- **Image（映像檔）**：應用程式的模板
-- **Container（容器）**：執行中的實體
-- **Dockerfile**：自動建構映像檔的腳本
-- **Docker Hub**：官方映像檔註冊中心
+- Image (映像檔)：相當於容器的**模板 或 藍圖**。它是一個唯讀檔案，包含了執行應用程式所需的所有內容 (程式碼、函式庫、環境變數、設定檔)。
+- Container (容器)：是映像檔的**運行實例**。你可以把它想像成一個輕量級的虛擬機，但它共享主機的操作系統核心，所以更節省資源。容器可以被啟動、停止、刪除。
+- Dockerfile：是一個**文本文件**，裡面包含了一系列的指令，用來告訴 Docker 如何自動建構 (build) 一個映像檔。
+- Docker Hub / Registry (倉庫/註冊中心)：是用來**儲存和分享**映像檔的地方。Docker Hub 是官方的公共倉庫，也有私有倉庫可用。
 
 ----
 
@@ -536,7 +543,7 @@ def transcribe():
 - 安裝 [Docker Desktop](https://www.docker.com/products/docker-desktop)
 
 ### Linux:
-- [官網](https://docs.docker.com/engine/install/)
+- 參考 [官方文件](https://docs.docker.com/engine/install/)
 
 ----
 
@@ -578,33 +585,21 @@ docker run -p 5000:5000 my-flask-app
 
 ```yaml
 services:
-  rust_server:
-    build: .
-    container_name: rust_server
-    networks:
-      - my_network
-    expose:
-      - 8080
-    environment:
-      - RUST_LOG=info
-
-  nginx_proxy:
+  web:
     image: nginx:latest
-    container_name: nginx_proxy
-    networks:
-      - my_network
-    ports:
-      - "80:80"
-      - "443:443"
-    volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf:ro
-      - ./ssl:/etc/nginx/ssl:ro
-    depends_on:
-      - rust_server
-
-networks:
-  my_network:
-    driver: bridge
+    ports: ["8080:80"]
+    volumes: ["./nginx.conf:/etc/nginx/nginx.conf:ro"]
+    depends_on: [api]
+  api:
+    build: ./api-service # 假設 API 服務在 api-service 資料夾
+    ports: ["5000:5000"]
+    environment: { DATABASE_URL: postgresql://user:password@db:5432/mydb }
+    depends_on: [db]
+  db:
+    image: postgres:15
+    environment: { POSTGRES_DB: mydb, POSTGRES_USER: user, POSTGRES_PASSWORD: password }
+    volumes: ["postgres_data:/var/lib/postgresql/data"]
+volumes: { postgres_data: }
 ```
 
 ----
@@ -612,14 +607,15 @@ networks:
 只要一行指令即可啟動全部服務：
 
 ```sh
-docker-compose up
+docker compose up
 ```
 
 ----
 
-- Docker 解決開發、測試與部署的落差
-- Docker Compose 幫你管理多個容器
-- 安裝簡單，入門門檻低
+- Docker 解決了環境不一致和部署困難的問題。
+- Dockerfile 用來定義如何打包你的應用程式。
+- Docker Compose 用來管理多個容器的應用程式，特別適合本地開發和測試。
+- 安裝和入門相對簡單，對開發和部署非常有幫助。
 
 ---
 
@@ -633,9 +629,9 @@ docker-compose up
 
 ### 架構
 
-- 簡報：Markdown
-- Markdown to HTML：Marp
-- 網站：GitHub Pages
+- 簡報內容： 使用 Markdown 語法撰寫
+- Markdown 轉 HTML： 使用 Marp CLI 工具將 Markdown 轉換成可以發佈的 HTML 投影片。
+- 網站託管：GitHub Pages 免費託管生成的 HTML 檔案
 
 ----
 
@@ -646,36 +642,41 @@ docker-compose up
 ## 什麼是 GitHub Actions？
 
 - GitHub 推出的 CI/CD（持續整合／持續部署）工具  
-- 用來自動化建置、測試與部署程式碼  
-- 使用 YAML 語法定義於 `.github/workflows/` 目錄下  
+- 可以讓你 自動化 軟體開發中的各種 工作流程，例如：程式碼檢查、測試、建構、部署等。
+- 工作流程定義在專案根目錄下的 `.github/workflows/` 資料夾內的 YAML 檔案中。
 
 ----
 
 ## 核心概念
 
-- **Workflow（工作流程）**：由事件觸發的一連串自動化流程  
-- **Event（事件）**：觸發 workflow 的動作（例如：push、pull request）  
-- **Job（工作）**：在同一個 runner 上執行的一組步驟  
-- **Step（步驟）**：單一任務（例如執行指令、使用 action）  
-- **Runner（執行器）**：負責執行工作的機器，可由 GitHub 提供或自架  
+- Workflow (工作流程)：定義自動化流程的 YAML 檔案。可以由一個或多個 Job 組成。
+- Event (事件)：觸發 Workflow 運行的動作，例如 `push`、`pull_request`、`schedule` (定時執行) 等。
+- Job (工作)：Workflow 中的一個執行單元，包含一個或多個 Step。同一個 Job 中的所有 Step 會在同一個 Runner 上執行。
+- Step (步驟)：Job 中的最小執行單位，可以是一個 Shell 指令，或者是一個可重複使用的 Action。
+- Action (動作)：可重複使用的程式碼單元，用來執行常見的自動化任務 (例如：checkout 程式碼、設定 Node.js 環境、部署到 AWS 等)。可以自己撰寫，也可以使用市集上別人寫好的 Action。
+- Runner (執行器)：實際執行 Job 的虛擬機器。GitHub 提供免費的 Linux, Windows, macOS Runner，也可以自己架設 Runner。
 
 ----
 
 ## 範例
 
-```yaml
-name: CI
+在專案根目錄建立 `.github/workflows/hello.yml`
 
-on: [push]
+```yaml
+name: Say Hello                            # Workflow 的名稱
+
+on: [push]                                 # 觸發條件：當有 push 事件發生時
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: 執行腳本
+  build:                                   # 定義一個名為 'build' 的 Job
+    runs-on: ubuntu-latest                 # 指定執行環境為最新的 Ubuntu
+    steps:                                 # 這個 Job 包含的步驟
+      - uses: actions/checkout@v4          # 拉取程式碼
+      - name: Run a one-line script        # 執行 Shell 指令
         run: echo "Hello, GitHub Actions!"
 ```
+
+當你 push 程式碼到 GitHub 時，這個 Workflow 就會自動執行。
 
 ----
 
@@ -690,10 +691,10 @@ jobs:
 
 ## 應用情境
 
-- 程式碼格式檢查與靜態分析  
-- 自動執行單元測試  
-- 建置與發佈應用程式  
-- 自動部署至伺服器或雲端  
+- 程式碼檢查：自動檢查程式碼風格是否符合規範。
+- 單元測試：每次 push 或 PR 時自動執行測試。
+- 建構與打包：自動編譯程式碼、建構 Docker Image。
+- 部署：自動將應用程式部署到伺服器、雲平台 (AWS, GCP, Azure) 或 GitHub Pages。
 
 ----
 
