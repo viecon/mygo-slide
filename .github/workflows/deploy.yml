@@ -25,7 +25,9 @@ jobs:
 
       - name: Install Marp CLI and build slide
         run: |
+          mkdir -p dist
           npx @marp-team/marp-cli@latest slide.md --html --output dist/index.html
+          cp -r pics dist/
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
