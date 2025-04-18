@@ -4,8 +4,111 @@ _class: lead
 paginate: true
 backgroundImage: url('https://marp.app/assets/hero-background.svg')
 ---
+<style>
+/* Custom CSS for Marp Slides Readability */
+section {
+  font-size: 22px; /* 稍微加大基礎字體 */
+  line-height: 1.65; /* 增加行距 */
+  padding: 50px 70px; /* 增加頁面內邊距 */
+  text-align: left; /* 預設文字靠左對齊 */
+}
+
+h1, h2, h3 {
+  margin-top: 1em;
+  margin-bottom: 0.7em; /* 標題下方間距 */
+  line-height: 1.3;
+  text-align: left; /* 標題也靠左 */
+}
+
+h1 { font-size: 2.0em; color: #333; } /* 調整 H1 大小和顏色 */
+h2 { font-size: 1.6em; color: #444; } /* 調整 H2 大小和顏色 */
+h3 { font-size: 1.3em; color: #555; } /* 調整 H3 大小和顏色 */
+
+p {
+  margin-bottom: 0.8em; /* 段落間距 */
+}
+
+ul, ol {
+  padding-left: 1.8em; /* 列表縮排 */
+  margin-bottom: 0.8em;
+}
+
+li {
+  margin-bottom: 0.5em; /* 列表項間距 */
+}
+
+pre {
+  padding: 1em 1.2em; /* 程式碼區塊內邊距 */
+  margin: 0.5em 0 1em 0; /* 程式碼區塊上下邊距 */
+  border-radius: 5px; /* 圓角 */
+  font-size: 0.85em; /* 程式碼字體稍小 */
+  line-height: 1.45; /* 程式碼行距 */
+  background-color: #f5f5f5; /* 淺灰色背景 */
+  border: 1px solid #e0e0e0; /* 細邊框 */
+  overflow-x: auto; /* 長行自動出現滾動條 */
+  max-width: 100%;
+}
+
+/* Marp 的預設主題通常會處理行內程式碼，如果效果不佳可以取消註解並調整 */
+/*
+code {
+  background-color: #eee;
+  padding: 0.2em 0.4em;
+  border-radius: 3px;
+  font-size: 0.9em;
+}
+*/
+
+img {
+  max-width: 85%; /* 限制圖片最大寬度 */
+  height: auto;
+  display: block;
+  margin: 1.2em auto; /* 圖片上下邊距，並水平置中 */
+  border: 1px solid #ddd; /* 可選：為圖片加上細邊框 */
+  border-radius: 4px; /* 可選：圖片圓角 */
+}
+
+blockquote {
+  margin: 1em 0 1em 1.5em; /* 引用區塊邊距 */
+  padding-left: 1.2em; /* 引用區塊左內邊距 */
+  border-left: 4px solid #ccc; /* 左側引用線 */
+  color: #666; /* 引用文字顏色 */
+  font-style: italic; /* 可選：斜體 */
+}
+
+a {
+  color: #007bff; /* 連結顏色 */
+  text-decoration: none; /* 移除底線 */
+}
+
+a:hover {
+  text-decoration: underline; /* 滑鼠懸停時加底線 */
+}
+
+/* Lead class for title slide */
+section.lead h1 {
+  text-align: center;
+  font-size: 2.5em;
+  margin-bottom: 0.5em;
+}
+section.lead {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+}
+
+/* Helper class for centering content if needed */
+.center {
+  text-align: center;
+}
+</style>
+
+<section data-marp-fitting-header="false">
 
 # 陽明交大創客俱樂部社課 - AI 梗圖翻頁機
+
+</section>
 
 ---
 
@@ -209,6 +312,12 @@ response = model.generate_content("講個冷笑話")
 
 print(response.text)
 ```
+
+----
+
+API rate
+
+![alt text](pics/gemini_API_rate.png)
 
 ----
 
