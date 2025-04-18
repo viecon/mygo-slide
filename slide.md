@@ -336,7 +336,7 @@ def transcribe():                                                 # 定義一個
 
 - 路由： `/spin`
 - Method： `POST`
-- Body： `{"position": [轉到第幾張圖]}`
+- Body： `{"position": <轉到第幾張圖>}`
 
 ----
 
