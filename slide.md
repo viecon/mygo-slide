@@ -430,8 +430,8 @@ CMD ["python3", "/app/app.py"]
 然後建構映像檔並執行：
 
 ```sh
-docker build -t my-app -p 5000:5000 .
-docker run my-app
+docker build -t my-flask-app .
+docker run -p 5000:5000 my-flask-app
 ```
 
 ----
