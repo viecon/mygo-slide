@@ -514,6 +514,10 @@ docker-compose up
 
 ---
 
+## 這篇簡報
+
+----
+
 [簡報 Repo](https://github.com/viecon/mygo-slide)
 
 ----
@@ -584,33 +588,34 @@ jobs:
 
 ----
 
-- 官方文件：[https://docs.github.com/actions](https://docs.github.com/actions)  
-- Action 市集：[https://github.com/marketplace/actions](https://github.com/marketplace/actions)
+### 我拿來做什麼
+
+當 push 時用 `Marp` 把 Markdown 轉成 HTML，並部署到 `GitHub Pages`
+
+```yaml
+- name: Install Marp CLI and build slide
+  run: |
+    mkdir -p dist
+    npx @marp-team/marp-cli@latest slide.md --html --output dist/index.html
+    cp -r pics dist/
+
+- name: Setup Pages
+  uses: actions/configure-pages@v5
+
+- name: Upload artifact
+  uses: actions/upload-pages-artifact@v3
+  with:
+    path: dist
+
+- name: Deploy to GitHub Pages
+  id: deployment
+  uses: actions/deploy-pages@v4
+```
 
 ----
 
-當 push 時自動用 `Marp` 把 Markdown 轉成 HTML
-並部署到 `GitHub Pages`
-
-```yaml
-      - name: Install Marp CLI and build slide
-        run: |
-          mkdir -p dist
-          npx @marp-team/marp-cli@latest slide.md --html --output dist/index.html
-          cp -r pics dist/
-
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
-
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: dist
-
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
-```
+- 官方文件：[https://docs.github.com/actions](https://docs.github.com/actions)  
+- Action 市集：[https://github.com/marketplace/actions](https://github.com/marketplace/actions)
 
 ---
 
