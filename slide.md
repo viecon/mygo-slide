@@ -123,7 +123,11 @@ section.lead {
 
 ---
 
+<div class="center">
+
 ## 架構簡介
+
+</div>
 
 ----
 
@@ -263,8 +267,6 @@ Generate 5 different ways to ask:
 
 ## 攻擊
 
-----
-
 - Jail Breaking (越獄)： 繞過模型的安全限制，使其產生不當內容。
 - Prompt Injection (提示注入)： 將惡意指令注入提示中，操控模型行為。
 - ...等等
@@ -276,8 +278,6 @@ Generate 5 different ways to ask:
 ----
 
 ## 怎麼辦
-
-----
 
 - 使用較新的模型： 新模型通常有更好的安全防護。
 - 權限最小化： 不要給予 LLM 過高的系統或資料存取權限。
