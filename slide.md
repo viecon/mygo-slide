@@ -1,5 +1,8 @@
 ---
 marp: true
+_class: lead
+paginate: true
+backgroundImage: url('https://marp.app/assets/hero-background.svg')
 ---
 
 # 陽明交大創客俱樂部社課 - AI 梗圖翻頁機
@@ -13,6 +16,7 @@ marp: true
 3. API 串接
 4. ESP32 程式撰寫
 5. Docker (有時間的話)
+6. 這篇簡報 (真的有時間的話)
 
 ---
 
@@ -65,7 +69,6 @@ marp: true
 
 ### One-Shot 
 
-<!-- backgroundImage:  -->
 
 
 定義： 提供一個例子，幫助模型理解任務格式與期望輸出。
@@ -76,6 +79,7 @@ marp: true
 ```
 
 ----
+<!-- backgroundImage: url('https://marp.app/assets/hero-background.svg') -->
 
 ### Few-Shot
 
@@ -508,6 +512,106 @@ docker-compose up
 - Docker Compose 幫你管理多個容器
 - 安裝簡單，入門門檻低
 
+---
+
+[簡報 Repo](https://github.com/viecon/mygo-slide)
+
 ----
+
+### 架構
+
+- 簡報：Markdown
+- Markdown to HTML：Marp
+- 網站：GitHub Pages
+
+----
+
+## Github Actions
+
+----
+
+## 什麼是 GitHub Actions？
+
+- GitHub 推出的 CI/CD（持續整合／持續部署）工具  
+- 用來自動化建置、測試與部署程式碼  
+- 使用 YAML 語法定義於 `.github/workflows/` 目錄下  
+
+----
+
+## 核心概念
+
+- **Workflow（工作流程）**：由事件觸發的一連串自動化流程  
+- **Event（事件）**：觸發 workflow 的動作（例如：push、pull request）  
+- **Job（工作）**：在同一個 runner 上執行的一組步驟  
+- **Step（步驟）**：單一任務（例如執行指令、使用 action）  
+- **Runner（執行器）**：負責執行工作的機器，可由 GitHub 提供或自架  
+
+----
+
+## 範例
+
+```yaml
+name: CI
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: 執行腳本
+        run: echo "Hello, GitHub Actions!"
+```
+
+----
+
+## 為什麼要使用 GitHub Actions？
+
+- 與 GitHub 原生整合  
+- 輕鬆自動化測試與部署流程  
+- 擁有豐富的可重複使用 actions 生態系  
+- 公開儲存庫免費使用  
+
+----
+
+## 應用情境
+
+- 程式碼格式檢查與靜態分析  
+- 自動執行單元測試  
+- 建置與發佈應用程式  
+- 自動部署至伺服器或雲端  
+
+----
+
+- 官方文件：[https://docs.github.com/actions](https://docs.github.com/actions)  
+- Action 市集：[https://github.com/marketplace/actions](https://github.com/marketplace/actions)
+
+----
+
+當 push 時自動用 `Marp` 把 Markdown 轉成 HTML
+並部署到 `GitHub Pages`
+
+```yaml
+      - name: Install Marp CLI and build slide
+        run: |
+          mkdir -p dist
+          npx @marp-team/marp-cli@latest slide.md --html --output dist/index.html
+          cp -r pics dist/
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+```
+
+---
 
 # END
