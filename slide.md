@@ -123,13 +123,11 @@ section.lead {
 
 ---
 
-<div class="center">
-
 ## 架構簡介
 
-</div>
-
 ----
+
+## 架構簡介
 
 ![專案整體架構圖](pics/whole_structure.png)
 [專案程式碼連結 (Code)](https://github.com/godempty/MyGo_Flipper)
@@ -140,6 +138,18 @@ section.lead {
 
 ----
 
+### 什麼是大型語言模型?
+
+----
+
+### 什麼是大型語言模型?
+
+> it’s a prediction engine. The model takes sequential text as an input and then predicts what the following token should be, based on the data it was trained on. The LLM is operationalized to do this over and over again, adding the previously predicted token to the end of the sequential text for predicting the following token. The next token prediction is based on the relationship between what’s in the previous tokens and what the LLM has seen during its training.
+
+**簡單來說：** LLM 就像一個超強的文字接龍大師，它根據你給它的文字序列（輸入），預測下一個最可能出現的字詞是什麼，這個預測是基於它在大量資料中學習到的模式。
+
+----
+
 ### 什麼是 Prompt Engineering？
 
 * 是設計與優化提示語 (`prompts`) 以引導 **大型語言模型 (Large Language Models, LLMs)** 產生期望輸出的技術。
@@ -147,16 +157,6 @@ section.lead {
 * ~~賽博巫術~~
 
 [參考資料：Prompt Engineering - Lee Boonstra](https://www.kaggle.com/whitepaper-prompt-engineering)
-
-----
-
-### What is LLM? (什麼是大型語言模型?)
-
-----
-
-> it’s a prediction engine. The model takes sequential text as an input and then predicts what the following token should be, based on the data it was trained on. The LLM is operationalized to do this over and over again, adding the previously predicted token to the end of the sequential text for predicting the following token. The next token prediction is based on the relationship between what’s in the previous tokens and what the LLM has seen during its training.
-
-**簡單來說：** LLM 就像一個超強的文字接龍大師，它根據你給它的文字序列（輸入），預測下一個最可能出現的字詞是什麼，這個預測是基於它在大量資料中學習到的模式。
 
 ----
 
@@ -174,8 +174,6 @@ section.lead {
 <!-- backgroundImage: url("https://top1cdn.top1health.com/cdn/am/20080/63980.jpg") -->
 
 ### One-Shot 
-
-
 
 定義： 提供一個例子，幫助模型理解任務格式與期望輸出。
 
@@ -244,7 +242,6 @@ What makes a job interview successful?
 Answer:
 > Good communication, confidence, and understanding of the company.
 
-----
 
 **Main Prompt (using above as context):**
 
@@ -265,7 +262,7 @@ Generate 5 different ways to ask:
 
 ----
 
-## 攻擊
+### 攻擊
 
 - Jail Breaking (越獄)： 繞過模型的安全限制，使其產生不當內容。
 - Prompt Injection (提示注入)： 將惡意指令注入提示中，操控模型行為。
@@ -277,7 +274,7 @@ Generate 5 different ways to ask:
 
 ----
 
-## 怎麼辦
+### 怎麼辦
 
 - 使用較新的模型： 新模型通常有更好的安全防護。
 - 權限最小化： 不要給予 LLM 過高的系統或資料存取權限。
@@ -287,7 +284,7 @@ Generate 5 different ways to ask:
 
 ---
 
-API 串接
+## API 串接
 
 ----
 
@@ -318,23 +315,43 @@ print(response.text)
 
 ----
 
-API rate
+### API rate
 
 ![alt text](pics/gemini_API_rate.png)
 
 ----
 
-回顧上次社課
+### 回顧上次社課
 
 ![last_slide](pics/last_slide.png)
 
 ----
 
-#### 這次要做的事情： 在後端 API (/api/transcribe) 接收一個 wav 聲音檔，讓 Gemini 理解語音內容後，根據內容選擇一張最適合的梗圖，最後回傳該圖片的編號。
+### 這次要做的事情： 在後端 API (/api/transcribe) 接收一個 `wav` 聲音檔，讓 Gemini 理解語音內容後，根據內容選擇一張最適合的梗圖，最後回傳該圖片的編號。
 
 ----
 
-Prompt
+### 語音辨識
+
+```py
+import google.generativeai as genai
+
+def transcribe_audio(audio_content):
+
+    model = genai.GenerativeModel("gemini-1.5-flash")
+    result = model.generate_content(
+        [
+            "請將以下語音轉文字並直接輸出，如果有雜音可以忽略，如果全都是雜音或是無法分辨，請回覆「&$%$hu#did」",
+            {"mime_type": "audio/wav", "data": audio_content},
+        ]
+    )
+    app.logger.info(f"{result.text=}")
+    return result.text
+```
+
+----
+
+### Prompt
 
 ```py
 import json
@@ -367,27 +384,7 @@ prompt = f"""
 
 ----
 
-語音辨識
-
-```py
-import google.generativeai as genai
-
-def transcribe_audio(audio_content):
-
-    model = genai.GenerativeModel("gemini-1.5-flash")
-    result = model.generate_content(
-        [
-            "請將以下語音轉文字並直接輸出，如果有雜音可以忽略，如果全都是雜音或是無法分辨，請回覆「&$%$hu#did」",
-            {"mime_type": "audio/wav", "data": audio_content},
-        ]
-    )
-    app.logger.info(f"{result.text=}")
-    return result.text
-```
-
-----
-
-API
+### API
 
 ```py
 @app.route("/api/transcribe", methods=["POST"])                   # 定義一個路由，處理 POST 請求，路徑為 /api/transcribe
@@ -398,7 +395,7 @@ def transcribe():                                                 # 定義一個
 
 ----
 
-API
+### API
 
 ```py
 @app.route("/api/transcribe", methods=["POST"])                   # 定義一個路由，處理 POST 請求，路徑為 /api/transcribe
@@ -413,7 +410,7 @@ def transcribe():                                                 # 定義一個
 
 ----
 
-API
+### API
 
 ```py
 @app.route("/api/transcribe", methods=["POST"])                   # 定義一個路由，處理 POST 請求，路徑為 /api/transcribe
