@@ -51,8 +51,6 @@ marp: true
 
 ### Zero-Shot
 
-----
-
 定義： 直接給予模型任務指令，無需提供例子。
 
 ```text
@@ -64,8 +62,6 @@ marp: true
 <!-- backgroundImage: url("https://top1cdn.top1health.com/cdn/am/20080/63980.jpg") -->
 
 ### One-Shot 
-
-----
 
 <!-- backgroundImage:  -->
 
@@ -81,8 +77,6 @@ marp: true
 
 ### Few-Shot
 
-----
-
 定義： 提供多個例子，幫助模型理解任務格式與期望輸出。
 
 ```text
@@ -95,8 +89,6 @@ marp: true
 
 ### Chain-of-Thought (CoT)
 
-----
-
 定義： 引導模型逐步推理，透過中間步驟來達成最終答案。
 
 ```text
@@ -108,8 +100,6 @@ Let's think step by step.
 
 ### Role/Persona Prompting
 
-----
-
 定義： 指定模型扮演特定角色，以影響其語氣與回應方式。
 
 ```text
@@ -120,7 +110,6 @@ Let's think step by step.
 
 ### Contextual Prompting
 
-----
 
 定義： 給模型一些背景知識，引導他產出想要的結果。
 
