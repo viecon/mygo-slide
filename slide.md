@@ -451,7 +451,120 @@ def transcribe():                                                 # 定義一個
 
 ----
 
-// TODO
+### Basic Setting
+
+```cpp
+#include <Stepper.h>
+#include <WiFi.h>
+#include <WebServer.h>
+#include <ArduinoJson.h>
+
+// Replace with your network credentials
+const char *ssid = "SSID";
+const char *password = "PASSWORD";
+
+// Create a WebServer object on port 80
+WebServer server(80);
+
+const int stepsPerRevolution = 2048; // change this to fit the number of steps per revolution
+
+// ULN2003 Motor Driver Pins
+#define IN1 19
+#define IN2 18
+#define IN3 5
+#define IN4 17
+
+// initialize the stepper library
+Stepper myStepper(stepsPerRevolution, IN1, IN3, IN2, IN4);
+int position[32] = {...};
+int cur_pos = 0;
+```
+
+----
+
+### Setup
+
+Connect to WIFI and start the server.
+
+```cpp
+void setup()
+{
+    // Start Serial communication
+    Serial.begin(115200);
+
+    // Connect to Wi-Fi
+    WiFi.begin(ssid, password);
+    while (WiFi.status() != WL_CONNECTED)
+    {
+        delay(500);
+        Serial.print(".");
+    }
+    Serial.println("\nConnected to WiFi");
+    Serial.print("IP Address: ");
+    Serial.println(WiFi.localIP());
+
+    // Define routes
+    server.on("/spin", HTTP_POST, handlePostData);
+    // Start the server
+    server.begin();
+    // set the speed at 5 rpm
+    myStepper.setSpeed(5);
+}
+```
+
+----
+
+### Control stepper
+
+```cpp
+void move_to(int tar)
+{
+    int diff = position[tar] - cur_pos;
+    if (diff > 0)
+        diff = diff - 2048;
+    myStepper.step(diff);
+    cur_pos = position[tar];
+}
+```
+
+----
+
+### Handle request
+
+```cpp
+void handlePostData()
+{
+    if (server.method() != HTTP_POST)
+    {
+        server.send(405, "application/json", "{\"error\":\"Method Not Allowed\"}");
+        return;
+    }
+    String body = server.arg("plain"); // Get the raw body as a string
+
+    Serial.println("Received Body:");
+    Serial.println(body);
+
+    // Parse JSON using ArduinoJson
+    StaticJsonDocument<200> doc;
+    DeserializationError error = deserializeJson(doc, body);
+
+    if (error)
+    {
+        Serial.print("JSON Parse Error: ");
+        Serial.println(error.c_str());
+        server.send(400, "application/json", "{\"error\":\"Invalid JSON\"}");
+        return;
+    }
+
+    int position = doc["position"];
+    Serial.println(position);
+    // Respond with the received data
+    String jsonResponse = "{\"received\":\"received\"}";
+    server.send(200, "application/json", jsonResponse);
+    move_to(position - 1);
+    Serial.println(cur_pos);
+}
+```
 
 ----
 
