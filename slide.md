@@ -405,6 +405,9 @@ def transcribe():
 ### Windows / macOS 使用者：
 - 安裝 [Docker Desktop](https://www.docker.com/products/docker-desktop)
 
+### Linux:
+- [官網](https://docs.docker.com/engine/install/)
+
 ----
 
 ## Dockerfile
