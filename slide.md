@@ -49,16 +49,6 @@ pre {
   max-width: 100%;
 }
 
-/* Marp 的預設主題通常會處理行內程式碼，如果效果不佳可以取消註解並調整 */
-/*
-code {
-  background-color: #eee;
-  padding: 0.2em 0.4em;
-  border-radius: 3px;
-  font-size: 0.9em;
-}
-*/
-
 img {
   max-width: 85%; /* 限制圖片最大寬度 */
   height: auto;
@@ -119,7 +109,7 @@ section.lead {
 3. API 串接
 4. ESP32 程式撰寫
 5. Docker (有時間的話)
-6. 這篇簡報 (真的有時間的話)
+6. 這篇簡報 (真的還有時間的話)
 
 ---
 
@@ -127,7 +117,7 @@ section.lead {
 
 ----
 
-## 架構簡介
+### 架構簡介
 
 ![專案整體架構圖](pics/whole_structure.png)
 [專案程式碼連結 (Code)](https://github.com/godempty/MyGo_Flipper)
@@ -135,10 +125,6 @@ section.lead {
 ---
 
 ## Prompt Engineering
-
-----
-
-### 什麼是大型語言模型?
 
 ----
 
@@ -152,9 +138,9 @@ section.lead {
 
 ### 什麼是 Prompt Engineering？
 
-* 是設計與優化提示語 (`prompts`) 以引導 **大型語言模型 (Large Language Models, LLMs)** 產生期望輸出的技術。
-* 透過精心設計的提示詞，提高模型在各種任務上的表現與可靠性。
-* ~~賽博巫術~~
+- 是設計與優化提示語 (`prompts`) 以引導 **大型語言模型 (Large Language Models, LLMs)** 產生期望輸出的技術。
+- 透過精心設計的提示詞，提高模型在各種任務上的表現與可靠性。
+- ~~賽博巫術~~
 
 [參考資料：Prompt Engineering - Lee Boonstra](https://www.kaggle.com/whitepaper-prompt-engineering)
 
@@ -317,7 +303,7 @@ print(response.text)
 
 ### API rate
 
-![alt text](pics/gemini_API_rate.png)
+![API rate](pics/gemini_API_rate.png)
 
 ----
 
