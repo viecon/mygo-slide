@@ -321,13 +321,30 @@ def transcribe():                                                 # 定義一個
 
 ----
 
+### 目標：
+
+1. Host 一個 API server 接收 Flask 那邊傳來的資訊
+2. 根據傳來的資訊控制步進馬達
+
+----
+
+### API
+
+- 路由： `/spin`
+- Method： `POST`
+- Body： `{"position": [轉到第幾張圖]}`
+
+----
+
 // TODO
 
 ----
 
-### 回到 Flask
+### 回到 Python
 
 ----
+
+esp32_control.py
 
 ```py
 import requests
@@ -341,11 +358,11 @@ def control_esp(value):
     data = {"position": value}
     response = requests.post(f"{ESP_API_URL}", json=data)
     return response.json()
-
 ```
 
 ----
 
+app.py
 ```py
 import esp32_control as esp32_control
 
