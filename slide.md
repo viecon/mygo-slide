@@ -39,6 +39,8 @@ marp: true
 透過精心設計的提示詞，提高模型在各種任務上的表現與可靠性。
 ~~賽博巫術~~
 
+[Prompt Engineering - Lee Boonstra](https://www.kaggle.com/whitepaper-prompt-engineering)
+
 ----
 
 ### What is LLM?
