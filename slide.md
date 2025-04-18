@@ -20,7 +20,7 @@ marp: true
 
 ----
 
-![whole_structure](/whole_structure.png)
+![whole_structure](pics/whole_structure.png)
 
 ----
 
@@ -219,7 +219,7 @@ print(response.text)
 
 回顧上次社課
 
-![last_slide](/last_slide.png)
+![last_slide](pics/last_slide.png)
 
 ----
 
