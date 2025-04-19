@@ -24,6 +24,8 @@ h1 { font-size: 2.0em; color: #333; } /* 調整 H1 大小和顏色 */
 h2 { font-size: 1.6em; color: #444; } /* 調整 H2 大小和顏色 */
 h3 { font-size: 1.3em; color: #555; } /* 調整 H3 大小和顏色 */
 
+h6 { font-size: 3.0em; color: #444; text-align: center;}
+
 p {
   margin-bottom: 0.8em; /* 段落間距 */
 }
@@ -113,7 +115,7 @@ section.lead {
 
 ---
 
-## 架構簡介
+###### 架構簡介
 
 ----
 
@@ -124,7 +126,7 @@ section.lead {
 
 ---
 
-## Prompt Engineering
+###### Prompt Engineering
 
 ----
 
@@ -270,7 +272,7 @@ Generate 5 different ways to ask:
 
 ---
 
-## API 串接
+###### API 串接
 
 ----
 
@@ -286,13 +288,15 @@ pip install google-genai
 
 ----
 
+### 範例
+
 ```py
 import google.generativeai as genai
 
 # 請將 "YOUR_API_KEY" 替換成你自己的 API Key
 genai.configure(api_key="YOUR_API_KEY", transport="rest")
 
-# 選擇要使用的模型 (這裡使用 gemini-1.5-flash)
+# 選擇要使用的模型 (這裡使用 gemini-2.0-flash)
 model = genai.GenerativeModel("gemini-2.0-flash")
 response = model.generate_content("講個冷笑話")
 
@@ -323,7 +327,6 @@ print(response.text)
 import google.generativeai as genai
 
 def transcribe_audio(audio_content):
-
     model = genai.GenerativeModel("gemini-1.5-flash")
     result = model.generate_content(
         [
@@ -338,6 +341,8 @@ def transcribe_audio(audio_content):
 ----
 
 ### Prompt
+
+Role prompting, Few-shot prompting
 
 ```py
 import json
@@ -418,7 +423,7 @@ def transcribe():                                                 # 定義一個
 
 ---
 
-## ESP32 程式撰寫
+###### ESP32 程式撰寫
 
 ----
 
@@ -529,7 +534,13 @@ void handlePostData()
 
     Serial.println("Received Body:");
     Serial.println(body);
+```
 
+----
+
+### Parse JSON
+
+```cpp
     // Parse JSON using ArduinoJson
     StaticJsonDocument<200> doc;
     DeserializationError error = deserializeJson(doc, body);
@@ -541,7 +552,13 @@ void handlePostData()
         server.send(400, "application/json", "{\"error\":\"Invalid JSON\"}");
         return;
     }
+```
 
+----
+
+### Get position
+
+```cpp
     int position = doc["position"];
     Serial.println(position);
     // Respond with the received data
@@ -602,7 +619,7 @@ def transcribe():
 
 ---
 
-## Docker
+###### Docker
 
 ----
 
@@ -715,7 +732,7 @@ docker compose up
 
 ---
 
-## 這篇簡報
+###### 這篇簡報
 
 ----
 
